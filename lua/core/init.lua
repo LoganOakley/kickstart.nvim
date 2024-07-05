@@ -93,7 +93,7 @@ vim.keymap.set('n', '<leader>h', '<C-w><C-h>', { desc = 'Move focus to the left 
 vim.keymap.set('n', '<leader>l', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<leader>j', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<leader>k', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-vim.keymap.set('i', 'jj', '<ESC>', { desc = 'Leave insert mode' })
+vim.keymap.set('i', 'nn', '<ESC>', { desc = 'Leave insert mode' })
 vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz',{desc = 'See previous item in quick fix list'})
 vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz',{desc = 'See next item in quick fix list'})
 
@@ -379,6 +379,12 @@ require('lazy').setup({
             })
           end
 
+          if client and client.server_capabilities.signatureHelpProvider then
+            vim.api.nvim_create_autocmd({'CursorHold', 'CursorHoldI'}, {
+                callback = vim.lsp.buf.signature_help
+            })
+
+          end
           -- The following autocommand is used to enable inlay hints in your
           -- code, if the language server you are using supports them
           --
@@ -620,9 +626,8 @@ require('lazy').setup({
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
-      vim.o.background = "dark",
+      vim.o.background = "dark"
       vim.cmd.colorscheme 'gruvbox-material'
-      
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
     end,
