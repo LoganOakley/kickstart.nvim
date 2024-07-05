@@ -379,12 +379,6 @@ require('lazy').setup({
             })
           end
 
-          if client and client.server_capabilities.signatureHelpProvider then
-            vim.api.nvim_create_autocmd({'CursorHold', 'CursorHoldI'}, {
-                callback = vim.lsp.buf.signature_help
-            })
-
-          end
           -- The following autocommand is used to enable inlay hints in your
           -- code, if the language server you are using supports them
           --
