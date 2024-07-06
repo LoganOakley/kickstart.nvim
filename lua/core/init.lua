@@ -379,6 +379,13 @@ require('lazy').setup({
             })
           end
 
+          vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {focus = false})
+
+          if client and client.server_capabilities.signatureHelpProvider then
+            vim.api.nvim_create_autocmd('CursorHoldI', {
+              callback = vim.lsp.buf.signature_help
+            })
+          end
           -- The following autocommand is used to enable inlay hints in your
           -- code, if the language server you are using supports them
           --
