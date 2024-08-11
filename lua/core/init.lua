@@ -64,7 +64,6 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
-
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
@@ -93,9 +92,10 @@ vim.keymap.set('n', '<leader>h', '<C-w><C-h>', { desc = 'Move focus to the left 
 vim.keymap.set('n', '<leader>l', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<leader>j', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<leader>k', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-vim.keymap.set('i', 'nn', '<ESC>', { desc = 'Leave insert mode' })
-vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz',{desc = 'See previous item in quick fix list'})
-vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz',{desc = 'See next item in quick fix list'})
+vim.keymap.set('i', 'jj', '<ESC>', { desc = 'Leave insert mode' })
+vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz', { desc = 'See previous item in quick fix list' })
+vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz', { desc = 'See next item in quick fix list' })
+vim.keymap.set('n', '<leader>x', '<cmd>Ex<CR>', { desc = 'Open e[x]plorer' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -107,7 +107,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
-    vim.highlight.on_yank({higroup="Visual"})
+    vim.highlight.on_yank { higroup = 'Visual' }
   end,
 })
 
@@ -269,14 +269,21 @@ require('lazy').setup({
     end,
   },
   {
-    "L3MON4D3/LuaSnip",
+    'L3MON4D3/LuaSnip',
     -- follow latest release.
-    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    version = 'v2.*', -- Replace <CurrentMajor> by the latest released major (first number of latest release)
     -- install jsregexp (optional!).
-    build = "make install_jsregexp"
+    build = 'make install_jsregexp',
   },
-    { -- LSP Configuration & Plugins
+  { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
+    opts = {
+      setup = {
+        function(_, opts)
+          table.insert(opts.cmd, '--query-driver=/usr/bin/arm-none-eabi-gcc')
+        end,
+      },
+    },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
@@ -292,7 +299,6 @@ require('lazy').setup({
       { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
-
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
@@ -385,7 +391,7 @@ require('lazy').setup({
           -- This may be unwanted, since they displace some of your code
           if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
             map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled {})
             end, '[T]oggle Inlay [H]ints')
           end
         end,
@@ -409,7 +415,7 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-         gopls = {},
+        gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -620,7 +626,7 @@ require('lazy').setup({
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
-      vim.o.background = "dark"
+      vim.o.background = 'dark'
       vim.cmd.colorscheme 'gruvbox-material'
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
@@ -671,7 +677,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'go', 'html','javascript', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'go', 'html', 'javascript', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
