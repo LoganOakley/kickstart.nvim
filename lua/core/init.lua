@@ -1,3 +1,4 @@
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -283,6 +284,15 @@ require('lazy').setup({
           table.insert(opts.cmd, '--query-driver=/usr/bin/arm-none-eabi-gcc')
         end,
       },
+      config = function()
+        local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+        local servers = require '../servers.lua'
+
+        for server, opts in pairs(servers) do
+          opts.capabilities = capabilities
+          require('lspconfig')[server].setup(opts)
+        end
+      end,
     },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
@@ -414,18 +424,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
-        gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
-        --
+        clangd = {},
 
         lua_ls = {
           -- cmd = {...},
@@ -727,7 +726,6 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  --  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -749,6 +747,9 @@ require('lazy').setup({
     },
   },
 })
+
+vim.g.gruvbox_transparent_bg = true
+vim.cmd [[hi Normal ctermbg=NONE guibg=NONE]]
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
