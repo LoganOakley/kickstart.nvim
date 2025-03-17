@@ -1,4 +1,3 @@
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -625,10 +624,14 @@ require('lazy').setup({
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
-      vim.o.background = 'dark'
+      -- vim.o.background = 'dark'
       vim.cmd.colorscheme 'gruvbox-material'
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
+      vim.g.gruvbox_transparent_bg = true
+      vim.cmd [[hi Normal ctermbg=NONE guibg=NONE]]
+      vim.cmd [[hi NormalNC ctermbg=NONE guibg=NONE]]
+      vim.cmd [[hi NormalSB ctermbg=NONE guibg=NONE]]
     end,
   },
 
@@ -747,9 +750,6 @@ require('lazy').setup({
     },
   },
 })
-
-vim.g.gruvbox_transparent_bg = true
-vim.cmd [[hi Normal ctermbg=NONE guibg=NONE]]
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
